@@ -48,6 +48,17 @@ const NavBar = () => {
                 My Profile
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/allTickets">
+               AllTickets
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/ticketsDetails">
+                Tickets Details
+              </NavLink>
+            </li>
+
           </>
         ) : (
           <>
