@@ -138,7 +138,7 @@ const TicketDetails = () => {
             <div className="flex flex-wrap gap-3">
 
               {
-                perks.map((perk, index) => (
+                perks?.map((perk, index) => (
 
                   <div
                     key={index}
@@ -154,14 +154,22 @@ const TicketDetails = () => {
           </div>
 
           {/* button */}
-          <button className="btn btn-primary w-full mt-5">
-            Book Now
+          <button
+            disabled={quantity === 0}
+            className="btn btn-primary w-full mt-5"
+          >
+
+            {
+              quantity === 0
+                ? "No Seats Available"
+                : "Book Now"
+            }
+
           </button>
 
         </div>
 
       </div>
-
     </div>
   );
 };
