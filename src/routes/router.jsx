@@ -1,17 +1,27 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import RootLayout from "../Components/Layouts/RootLayout";
+import DashboardLayout from "../dashboard/DashboardLayout";
+
 import Home from "../Components/Pages/Home/Home";
 import Login from "../Components/Pages/Home/Login";
 import Register from "../Components/Pages/Home/Register";
+
 import MyProfile from "../Components/Pages/MyProfile";
-import PrivateRoute from "./PrivateRoute";
 import AllTickets from "../Components/Pages/AllTickets";
 import TicketsDetails from "../Components/Pages/TicketsDetails";
-import TicketCard from "../Components/TicketCard/TicketCard";
+
+import PrivateRoute from "./PrivateRoute";
+
+import AddTicket from "../Pages/Vendor/AddTicket";
+import UserProfile from "../Pages/User/UserProfile";
+import MyBookedTickets from "../Pages/User/MyBookedTickets";
+import TransactionHistory from "../Pages/User/TransactionHistory";
+import MyAddedTickets from "../Pages/Vendor/MyAddedTickets";
 
 export const router = createBrowserRouter([
 
+  // main layout
   {
     path: "/",
 
@@ -76,9 +86,50 @@ export const router = createBrowserRouter([
 
         },
       },
+
+    ],
+  },
+
+  // dashboard layout
+  {
+    path: "/dashboard",
+
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+
+    children: [
+
+      // user dashboard routes
       {
-        path: "ticketCard",
-        element:<TicketCard/>
+        path: "user-profile",
+
+        element: <UserProfile/>,
+      },
+
+      {
+        path: "my-booked-tickets",
+
+        element: <MyBookedTickets/>,
+      },
+
+      {
+        path: "transaction-history",
+
+        element: <TransactionHistory/>,
+      },
+
+      // vendor route
+      {
+        path: "addTicket",
+
+        element: <AddTicket />,
+      },
+      {
+        path: "myAddedTickets",
+        element:<MyAddedTickets/>,
       }
 
     ],
