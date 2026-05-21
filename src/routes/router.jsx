@@ -18,9 +18,11 @@ import UserProfile from "../Pages/User/UserProfile";
 import MyBookedTickets from "../Pages/User/MyBookedTickets";
 import TransactionHistory from "../Pages/User/TransactionHistory";
 import MyAddedTickets from "../Pages/Vendor/MyAddedTickets";
+import UpdateTicket from "../Pages/Vendor/UpdateTicket";
+import RequestedBookings from "../Pages/Vendor/RequestedBookings";
+import RevenueOverview from "../Pages/Vendor/RevenueOverview";
 
 export const router = createBrowserRouter([
-
   // main layout
   {
     path: "/",
@@ -28,7 +30,6 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
 
     children: [
-
       {
         index: true,
 
@@ -77,16 +78,11 @@ export const router = createBrowserRouter([
         ),
 
         loader: async ({ params }) => {
-
-          const res = await fetch(
-            `http://localhost:3000/tickets/${params.id}`
-          );
+          const res = await fetch(`http://localhost:3000/tickets/${params.id}`);
 
           return res.json();
-
         },
       },
-
     ],
   },
 
@@ -101,24 +97,23 @@ export const router = createBrowserRouter([
     ),
 
     children: [
-
       // user dashboard routes
       {
         path: "user-profile",
 
-        element: <UserProfile/>,
+        element: <UserProfile />,
       },
 
       {
         path: "my-booked-tickets",
 
-        element: <MyBookedTickets/>,
+        element: <MyBookedTickets />,
       },
 
       {
         path: "transaction-history",
 
-        element: <TransactionHistory/>,
+        element: <TransactionHistory />,
       },
 
       // vendor route
@@ -129,10 +124,24 @@ export const router = createBrowserRouter([
       },
       {
         path: "myAddedTickets",
-        element:<MyAddedTickets/>,
-      }
-
+        element: <MyAddedTickets />,
+      },
+      {
+        path: "updateTicket/:id",
+        element: <UpdateTicket />,
+        loader: async ({ params }) => {
+          const res = await fetch(`http://localhost:3000/tickets/${params.id}`);
+          return res.json();
+        },
+      },
+      {
+        path: "requestedBookings",
+        element: <RequestedBookings />,
+      },
+      {
+        path: "revenueOverview",
+        element: <RevenueOverview />,
+      },
     ],
   },
-
 ]);

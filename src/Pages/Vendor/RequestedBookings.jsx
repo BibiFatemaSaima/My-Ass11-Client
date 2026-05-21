@@ -1,22 +1,23 @@
-
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 
 import { AuthContext } from "../../Components/AuthContext/AuthContext";
 
-const MyBookedTickets = () => {
+const RequestedBookings = () => {
 
   const { user } = useContext(AuthContext);
 
   const [bookings, setBookings] = useState([]);
 
-  // fetch booked tickets
+  // fetch requested bookings
   useEffect(() => {
 
     if (user?.email) {
 
       axios
-        .get(`http://localhost:3000/bookings/${user.email}`)
+        .get(
+          `http://localhost:3000/requestedBookings/${user.email}`
+        )
 
         .then((res) => {
 
@@ -38,15 +39,16 @@ const MyBookedTickets = () => {
 
     <div className="max-w-7xl mx-auto px-4 py-10">
 
+      {/* heading */}
       <h1 className="text-4xl font-bold text-center mb-10">
-        My Booked Tickets
+        Requested Bookings
       </h1>
 
       {
         bookings.length === 0 ? (
 
           <div className="text-center text-xl font-semibold">
-            No Booked Tickets Found
+            No Bookings Found
           </div>
 
         ) : (
@@ -55,6 +57,7 @@ const MyBookedTickets = () => {
 
             <table className="table">
 
+              {/* head */}
               <thead>
 
                 <tr>
@@ -63,15 +66,15 @@ const MyBookedTickets = () => {
 
                   <th>Ticket</th>
 
-                  <th>Route</th>
+                  <th>Buyer Name</th>
 
-                  <th>Transport</th>
+                  <th>Buyer Email</th>
 
                   <th>Seats</th>
 
                   <th>Total Price</th>
 
-                  <th>Status</th>
+                  <th>Payment</th>
 
                 </tr>
 
@@ -84,20 +87,20 @@ const MyBookedTickets = () => {
 
                     <tr key={booking._id}>
 
-                      <td>
+                      <th>
                         {index + 1}
-                      </td>
+                      </th>
 
                       <td>
                         {booking.ticketTitle}
                       </td>
 
                       <td>
-                        {booking.from} → {booking.to}
+                        {booking.buyerName}
                       </td>
 
                       <td>
-                        {booking.transportType}
+                        {booking.buyerEmail}
                       </td>
 
                       <td>
@@ -110,8 +113,16 @@ const MyBookedTickets = () => {
 
                       <td>
 
-                        <span className="badge badge-success">
-                          {booking.bookingStatus}
+                        <span
+                          className={`badge ${
+                            booking.paymentStatus === "paid"
+                              ? "badge-success"
+                              : "badge-warning"
+                          }`}
+                        >
+
+                          {booking.paymentStatus}
+
                         </span>
 
                       </td>
@@ -133,4 +144,4 @@ const MyBookedTickets = () => {
   );
 };
 
-export default MyBookedTickets;
+export default RequestedBookings;

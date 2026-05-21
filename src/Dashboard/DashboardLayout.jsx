@@ -64,7 +64,7 @@ const DashboardLayout = () => {
             TicketBari
           </h2>
 
-          {/* links */}
+          {/* USER LINKS */}
           <li>
 
             <NavLink to="/dashboard/user-profile">
@@ -90,8 +90,47 @@ const DashboardLayout = () => {
           </li>
 
           {/* divider */}
+          <div className="divider">
+            Vendor Panel
+          </div>
+
+          {/* VENDOR LINKS */}
+          <li>
+
+            <NavLink to="/dashboard/addTicket">
+              Add Ticket
+            </NavLink>
+
+          </li>
+
+          <li>
+
+            <NavLink to="/dashboard/myAddedTickets">
+              My Added Tickets
+            </NavLink>
+
+          </li>
+
+          <li>
+
+            <NavLink to="/dashboard/requestedBookings">
+              Requested Bookings
+            </NavLink>
+
+          </li>
+
+          <li>
+
+            <NavLink to="/dashboard/revenueOverview">
+              Revenue Overview
+            </NavLink>
+
+          </li>
+
+          {/* divider */}
           <div className="divider"></div>
 
+          {/* MAIN LINKS */}
           <li>
 
             <NavLink to="/">
