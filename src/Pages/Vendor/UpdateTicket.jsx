@@ -82,7 +82,7 @@ const UpdateTicket = () => {
 
     axios
       .put(
-        `http://localhost:3000/tickets/${ticket._id}`,
+        `https://ass-11-server-sigma.vercel.app/${ticket._id}`,
         updatedTicket
       )
 

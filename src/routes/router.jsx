@@ -78,7 +78,7 @@ export const router = createBrowserRouter([
         ),
 
         loader: async ({ params }) => {
-          const res = await fetch(`http://localhost:3000/tickets/${params.id}`);
+          const res = await fetch(`https://ass-11-server-sigma.vercel.app/tickets/${params.id}`);
 
           return res.json();
         },
@@ -130,7 +130,7 @@ export const router = createBrowserRouter([
         path: "updateTicket/:id",
         element: <UpdateTicket />,
         loader: async ({ params }) => {
-          const res = await fetch(`http://localhost:3000/tickets/${params.id}`);
+          const res = await fetch(`https://ass-11-server-sigma.vercel.app/tickets/${params.id}`);
           return res.json();
         },
       },

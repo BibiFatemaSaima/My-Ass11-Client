@@ -59,7 +59,7 @@ const TicketDetails = () => {
     };
 
     axios
-      .post("http://localhost:3000/bookings", bookingData)
+      .post("https://ass-11-server-sigma.vercel.app/", bookingData)
       .then((res) => {
         console.log(res.data);
 

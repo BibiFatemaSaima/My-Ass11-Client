@@ -5,35 +5,25 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../Components/AuthContext/AuthContext";
 
 const AddTicket = () => {
-
   const { user } = useContext(AuthContext);
 
   const [selectedPerks, setSelectedPerks] = useState([]);
 
   // handle checkbox
   const handlePerks = (e) => {
-
     const value = e.target.value;
 
     if (e.target.checked) {
-
       setSelectedPerks([...selectedPerks, value]);
-
     } else {
-
-      const remaining = selectedPerks.filter(
-        (perk) => perk !== value
-      );
+      const remaining = selectedPerks.filter((perk) => perk !== value);
 
       setSelectedPerks(remaining);
-
     }
-
   };
 
   // add ticket
   const handleAddTicket = (e) => {
-
     e.preventDefault();
 
     const form = e.target;
@@ -67,55 +57,36 @@ const AddTicket = () => {
     };
 
     axios
-      .post("http://localhost:3000/tickets", ticketData)
+      .post("https://ass-11-server-sigma.vercel.app/tickets", ticketData)
 
       .then((res) => {
-
         console.log(res.data);
 
         if (res.data.insertedId) {
-
           toast.success("Ticket Added Successfully");
 
           form.reset();
 
           setSelectedPerks([]);
-
         }
-
       })
 
       .catch((error) => {
-
         console.log(error);
 
         toast.error("Failed To Add Ticket");
-
       });
-
   };
 
   return (
-
     <div className="max-w-4xl mx-auto p-6">
-
       <div className="bg-base-100 shadow-2xl rounded-2xl p-8">
+        <h2 className="text-4xl font-bold text-center mb-10">Add Ticket</h2>
 
-        <h2 className="text-4xl font-bold text-center mb-10">
-          Add Ticket
-        </h2>
-
-        <form
-          onSubmit={handleAddTicket}
-          className="space-y-6"
-        >
-
+        <form onSubmit={handleAddTicket} className="space-y-6">
           {/* title */}
           <div>
-
-            <label className="label font-bold">
-              Ticket Title
-            </label>
+            <label className="label font-bold">Ticket Title</label>
 
             <input
               type="text"
@@ -124,17 +95,12 @@ const AddTicket = () => {
               className="input input-bordered w-full"
               required
             />
-
           </div>
 
           {/* from & to */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
             <div>
-
-              <label className="label font-bold">
-                From
-              </label>
+              <label className="label font-bold">From</label>
 
               <input
                 type="text"
@@ -143,14 +109,10 @@ const AddTicket = () => {
                 className="input input-bordered w-full"
                 required
               />
-
             </div>
 
             <div>
-
-              <label className="label font-bold">
-                To
-              </label>
+              <label className="label font-bold">To</label>
 
               <input
                 type="text"
@@ -159,56 +121,34 @@ const AddTicket = () => {
                 className="input input-bordered w-full"
                 required
               />
-
             </div>
-
           </div>
 
           {/* transport */}
           <div>
-
-            <label className="label font-bold">
-              Transport Type
-            </label>
+            <label className="label font-bold">Transport Type</label>
 
             <select
               name="transportType"
               className="select select-bordered w-full"
               required
             >
+              <option value="">Select Transport</option>
 
-              <option value="">
-                Select Transport
-              </option>
+              <option value="Bus">Bus</option>
 
-              <option value="Bus">
-                Bus
-              </option>
+              <option value="Train">Train</option>
 
-              <option value="Train">
-                Train
-              </option>
+              <option value="Launch">Launch</option>
 
-              <option value="Launch">
-                Launch
-              </option>
-
-              <option value="Flight">
-                Flight
-              </option>
-
+              <option value="Flight">Flight</option>
             </select>
-
           </div>
 
           {/* price & quantity */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
             <div>
-
-              <label className="label font-bold">
-                Price
-              </label>
+              <label className="label font-bold">Price</label>
 
               <input
                 type="number"
@@ -217,14 +157,10 @@ const AddTicket = () => {
                 className="input input-bordered w-full"
                 required
               />
-
             </div>
 
             <div>
-
-              <label className="label font-bold">
-                Ticket Quantity
-              </label>
+              <label className="label font-bold">Ticket Quantity</label>
 
               <input
                 type="number"
@@ -233,19 +169,13 @@ const AddTicket = () => {
                 className="input input-bordered w-full"
                 required
               />
-
             </div>
-
           </div>
 
           {/* departure */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
             <div>
-
-              <label className="label font-bold">
-                Departure Date
-              </label>
+              <label className="label font-bold">Departure Date</label>
 
               <input
                 type="date"
@@ -253,14 +183,10 @@ const AddTicket = () => {
                 className="input input-bordered w-full"
                 required
               />
-
             </div>
 
             <div>
-
-              <label className="label font-bold">
-                Departure Time
-              </label>
+              <label className="label font-bold">Departure Time</label>
 
               <input
                 type="time"
@@ -268,95 +194,69 @@ const AddTicket = () => {
                 className="input input-bordered w-full"
                 required
               />
-
             </div>
-
           </div>
 
           {/* perks */}
           <div>
-
-            <label className="label font-bold mb-2">
-              Perks
-            </label>
+            <label className="label font-bold mb-2">Perks</label>
 
             <div className="flex flex-wrap gap-5">
-
               <label className="flex items-center gap-2">
-
                 <input
                   type="checkbox"
                   value="AC"
                   onChange={handlePerks}
                   className="checkbox"
                 />
-
                 AC
-
               </label>
 
               <label className="flex items-center gap-2">
-
                 <input
                   type="checkbox"
                   value="WiFi"
                   onChange={handlePerks}
                   className="checkbox"
                 />
-
                 WiFi
-
               </label>
 
               <label className="flex items-center gap-2">
-
                 <input
                   type="checkbox"
                   value="Breakfast"
                   onChange={handlePerks}
                   className="checkbox"
                 />
-
                 Breakfast
-
               </label>
 
               <label className="flex items-center gap-2">
-
                 <input
                   type="checkbox"
                   value="Charging Port"
                   onChange={handlePerks}
                   className="checkbox"
                 />
-
                 Charging Port
-
               </label>
 
               <label className="flex items-center gap-2">
-
                 <input
                   type="checkbox"
                   value="Cabin"
                   onChange={handlePerks}
                   className="checkbox"
                 />
-
                 Cabin
-
               </label>
-
             </div>
-
           </div>
 
           {/* image */}
           <div>
-
-            <label className="label font-bold">
-              Image URL
-            </label>
+            <label className="label font-bold">Image URL</label>
 
             <input
               type="text"
@@ -365,15 +265,11 @@ const AddTicket = () => {
               className="input input-bordered w-full"
               required
             />
-
           </div>
 
           {/* vendor name */}
           <div>
-
-            <label className="label font-bold">
-              Vendor Name
-            </label>
+            <label className="label font-bold">Vendor Name</label>
 
             <input
               type="text"
@@ -381,15 +277,11 @@ const AddTicket = () => {
               readOnly
               className="input input-bordered w-full"
             />
-
           </div>
 
           {/* vendor email */}
           <div>
-
-            <label className="label font-bold">
-              Vendor Email
-            </label>
+            <label className="label font-bold">Vendor Email</label>
 
             <input
               type="email"
@@ -397,21 +289,14 @@ const AddTicket = () => {
               readOnly
               className="input input-bordered w-full"
             />
-
           </div>
 
           {/* button */}
-          <button
-            type="submit"
-            className="btn btn-primary w-full"
-          >
+          <button type="submit" className="btn btn-primary w-full">
             Add Ticket
           </button>
-
         </form>
-
       </div>
-
     </div>
   );
 };

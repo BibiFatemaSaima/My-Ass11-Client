@@ -15,7 +15,7 @@ const TransactionHistory = () => {
     if (user?.email) {
 
       axios
-        .get(`http://localhost:3000/bookings/${user.email}`)
+        .get(`https://ass-11-server-sigma.vercel.app/${user.email}`)
 
         .then((res) => {
 

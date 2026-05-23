@@ -9,7 +9,7 @@ const Home = () => {
   useEffect(() => {
 
     axios
-      .get("http://localhost:3000/tickets")
+      .get("https://ass-11-server-sigma.vercel.app/tickets")
 
       .then((res) => {
 
