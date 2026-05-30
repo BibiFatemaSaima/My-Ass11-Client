@@ -21,6 +21,8 @@ import MyAddedTickets from "../Pages/Vendor/MyAddedTickets";
 import UpdateTicket from "../Pages/Vendor/UpdateTicket";
 import RequestedBookings from "../Pages/Vendor/RequestedBookings";
 import RevenueOverview from "../Pages/Vendor/RevenueOverview";
+import PaymentPage from "../Pages/PaymentPage/PaymentPage";
+import CheckoutForm from "../Components/CheckoutForm/CheckoutForm";
 
 export const router = createBrowserRouter([
   // main layout
@@ -78,7 +80,9 @@ export const router = createBrowserRouter([
         ),
 
         loader: async ({ params }) => {
-          const res = await fetch(`https://ass-11-server-sigma.vercel.app/tickets/${params.id}`);
+          const res = await fetch(
+            `https://ass-11-server-sigma.vercel.app/tickets/${params.id}`,
+          );
 
           return res.json();
         },
@@ -130,7 +134,9 @@ export const router = createBrowserRouter([
         path: "updateTicket/:id",
         element: <UpdateTicket />,
         loader: async ({ params }) => {
-          const res = await fetch(`https://ass-11-server-sigma.vercel.app/tickets/${params.id}`);
+          const res = await fetch(
+            `https://ass-11-server-sigma.vercel.app/tickets/${params.id}`,
+          );
           return res.json();
         },
       },
@@ -142,6 +148,16 @@ export const router = createBrowserRouter([
         path: "revenueOverview",
         element: <RevenueOverview />,
       },
+      {
+        path: "/dashboard/payment/:id",
+        loader: ({ params }) =>
+          fetch(`https://ass-11-server-sigma.vercel.app/booking/${params.id}`),
+        element: <PaymentPage />,
+      },
+      {
+        path: "checkoutFrom",
+        element:<CheckoutForm/>,
+      }
     ],
   },
 ]);

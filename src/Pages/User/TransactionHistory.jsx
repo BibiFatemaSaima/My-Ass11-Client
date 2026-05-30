@@ -4,136 +4,87 @@ import axios from "axios";
 import { AuthContext } from "../../Components/AuthContext/AuthContext";
 
 const TransactionHistory = () => {
-
   const { user } = useContext(AuthContext);
 
   const [transactions, setTransactions] = useState([]);
 
   // fetch transactions
   useEffect(() => {
-
     if (user?.email) {
-
       axios
         .get(`https://ass-11-server-sigma.vercel.app/${user.email}`)
 
         .then((res) => {
-
           setTransactions(res.data);
-
         })
 
         .catch((error) => {
-
           console.log(error);
-
         });
-
     }
-
   }, [user]);
 
   return (
-
     <div className="max-w-7xl mx-auto px-4 py-10">
-
       <h1 className="text-4xl font-bold text-center mb-10">
         Transaction History
       </h1>
 
-      {
-        transactions.length === 0 ? (
+      {transactions.length === 0 ? (
+        <div className="text-center text-xl font-semibold">
+          No Transaction Found
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>#</th>
 
-          <div className="text-center text-xl font-semibold">
-            No Transaction Found
-          </div>
+                <th>Ticket</th>
 
-        ) : (
+                <th>Transaction ID</th>
 
-          <div className="overflow-x-auto">
+                <th>Amount</th>
 
-            <table className="table">
+                <th>Payment Status</th>
 
-              <thead>
+                <th>Booking Date</th>
+              </tr>
+            </thead>
 
-                <tr>
+            <tbody>
+              {transactions.map((transaction, index) => (
+                <tr key={transaction._id}>
+                  <td>{index + 1}</td>
 
-                  <th>#</th>
+                  <td>{transaction.ticketTitle}</td>
 
-                  <th>Ticket</th>
+                  <td>
+                    {transaction.transactionId
+                      ? transaction.transactionId
+                      : "Not Paid Yet"}
+                  </td>
 
-                  <th>Transaction ID</th>
+                  <td>৳{transaction.totalPrice}</td>
 
-                  <th>Amount</th>
+                  <td>
+                    <span className="badge badge-primary">
+                      {transaction.paymentStatus
+                        ? transaction.paymentStatus
+                        : "Pending"}
+                    </span>
+                  </td>
 
-                  <th>Payment Status</th>
-
-                  <th>Booking Date</th>
-
+                  <td>
+                    {transaction.bookingDate ? transaction.bookingDate : "N/A"}
+                  </td>
                 </tr>
-
-              </thead>
-
-              <tbody>
-
-                {
-                  transactions.map((transaction, index) => (
-
-                    <tr key={transaction._id}>
-
-                      <td>
-                        {index + 1}
-                      </td>
-
-                      <td>
-                        {transaction.ticketTitle}
-                      </td>
-
-                      <td>
-                        {
-                          transaction.transactionId
-                            ? transaction.transactionId
-                            : "Not Paid Yet"
-                        }
-                      </td>
-
-                      <td>
-                        ৳{transaction.totalPrice}
-                      </td>
-
-                      <td>
-
-                        <span className="badge badge-primary">
-                          {
-                            transaction.paymentStatus
-                              ? transaction.paymentStatus
-                              : "Pending"
-                          }
-                        </span>
-
-                      </td>
-
-                      <td>
-                        {
-                          transaction.bookingDate
-                            ? transaction.bookingDate
-                            : "N/A"
-                        }
-                      </td>
-
-                    </tr>
-                  ))
-                }
-
-              </tbody>
-
-            </table>
-
-          </div>
-
-        )
-      }
-
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

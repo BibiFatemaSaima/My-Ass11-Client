@@ -2,10 +2,12 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useLoaderData } from "react-router-dom";
 import { toast } from "react-toastify";
+
 import { AuthContext } from "../../Components/AuthContext/AuthContext";
 
 const TicketDetails = () => {
   const ticket = useLoaderData();
+
   const { user } = useContext(AuthContext);
 
   const [bookingQuantity, setBookingQuantity] = useState(1);
@@ -29,37 +31,59 @@ const TicketDetails = () => {
   // BOOKING HANDLER
   // =======================
   const handleBooking = () => {
+    // login check
     if (!user) {
       return toast.error("Please login first");
     }
 
+    // invalid quantity
     if (bookingQuantity < 1) {
       return toast.error("Invalid quantity");
     }
 
+    // quantity validation
     if (bookingQuantity > quantity) {
       return toast.error("Not enough seats available");
     }
 
+    // booking data
     const bookingData = {
       ticketId: _id,
+
       ticketTitle: title,
 
+      image: image,
+
+      from: from,
+
+      to: to,
+
+      transportType: transportType,
+
+      departureDate: departureDate,
+
+      departureTime: departureTime,
+
       buyerName: user?.displayName,
+
       buyerEmail: user?.email,
 
       vendorEmail: vendorEmail,
 
-      seats: bookingQuantity, // ✅ IMPORTANT FIX (backend expects seats)
+      seats: bookingQuantity,
 
       totalPrice: price * bookingQuantity,
 
-      paymentStatus: "pending", // ✅ FIXED (consistent naming)
+      bookingStatus: "pending",
+
       bookingDate: new Date(),
     };
 
+    // save booking
     axios
-      .post("https://ass-11-server-sigma.vercel.app/", bookingData)
+
+      .post("https://ass-11-server-sigma.vercel.app/bookings", bookingData)
+
       .then((res) => {
         console.log(res.data);
 
@@ -69,8 +93,10 @@ const TicketDetails = () => {
           document.getElementById("booking_modal").close();
         }
       })
+
       .catch((error) => {
         console.log(error);
+
         toast.error("Booking Failed");
       });
   };
@@ -78,7 +104,6 @@ const TicketDetails = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 bg-base-100 shadow-2xl rounded-2xl overflow-hidden">
-
         {/* IMAGE */}
         <div>
           <img src={image} alt={title} className="w-full h-full object-cover" />
@@ -86,19 +111,36 @@ const TicketDetails = () => {
 
         {/* DETAILS */}
         <div className="p-6 space-y-4">
-
           <h1 className="text-4xl font-bold">{title}</h1>
 
-          <p className="text-lg"><b>Route:</b> {from} → {to}</p>
-          <p className="text-lg"><b>Transport:</b> {transportType}</p>
-          <p className="text-lg"><b>Price:</b> ৳{price}</p>
-          <p className="text-lg"><b>Available Seats:</b> {quantity}</p>
-          <p className="text-lg"><b>Date:</b> {departureDate}</p>
-          <p className="text-lg"><b>Time:</b> {departureTime}</p>
+          <p className="text-lg">
+            <b>Route:</b> {from} → {to}
+          </p>
+
+          <p className="text-lg">
+            <b>Transport:</b> {transportType}
+          </p>
+
+          <p className="text-lg">
+            <b>Price:</b> ৳{price}
+          </p>
+
+          <p className="text-lg">
+            <b>Available Seats:</b> {quantity}
+          </p>
+
+          <p className="text-lg">
+            <b>Date:</b> {departureDate}
+          </p>
+
+          <p className="text-lg">
+            <b>Time:</b> {departureTime}
+          </p>
 
           {/* PERKS */}
           <div>
             <h2 className="text-xl font-bold mb-2">Perks</h2>
+
             <div className="flex flex-wrap gap-2">
               {perks?.map((perk, i) => (
                 <span key={i} className="badge badge-outline">
@@ -108,7 +150,7 @@ const TicketDetails = () => {
             </div>
           </div>
 
-          {/* BUTTON */}
+          {/* BOOK BUTTON */}
           <button
             disabled={quantity === 0}
             onClick={() => document.getElementById("booking_modal").showModal()}
@@ -122,15 +164,31 @@ const TicketDetails = () => {
       {/* MODAL */}
       <dialog id="booking_modal" className="modal">
         <div className="modal-box">
-
           <h3 className="font-bold text-2xl mb-4">Confirm Booking</h3>
 
           <div className="space-y-3">
+            {/* title */}
+            <input
+              className="input input-bordered w-full"
+              value={title}
+              readOnly
+            />
 
-            <input className="input input-bordered w-full" value={title} readOnly />
-            <input className="input input-bordered w-full" value={user?.displayName || ""} readOnly />
-            <input className="input input-bordered w-full" value={user?.email || ""} readOnly />
+            {/* name */}
+            <input
+              className="input input-bordered w-full"
+              value={user?.displayName || ""}
+              readOnly
+            />
 
+            {/* email */}
+            <input
+              className="input input-bordered w-full"
+              value={user?.email || ""}
+              readOnly
+            />
+
+            {/* quantity */}
             <input
               type="number"
               min="1"
@@ -140,16 +198,15 @@ const TicketDetails = () => {
               className="input input-bordered w-full"
             />
 
+            {/* total price */}
             <input
               className="input input-bordered w-full"
               value={`৳${price * bookingQuantity}`}
               readOnly
             />
-
           </div>
 
           <div className="modal-action">
-
             <form method="dialog">
               <button className="btn">Cancel</button>
             </form>
@@ -157,9 +214,7 @@ const TicketDetails = () => {
             <button onClick={handleBooking} className="btn btn-primary">
               Confirm Booking
             </button>
-
           </div>
-
         </div>
       </dialog>
     </div>

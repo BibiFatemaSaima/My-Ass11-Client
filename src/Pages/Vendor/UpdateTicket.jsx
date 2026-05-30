@@ -6,7 +6,6 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const UpdateTicket = () => {
-
   const ticket = useLoaderData();
 
   const navigate = useNavigate();
@@ -15,48 +14,31 @@ const UpdateTicket = () => {
 
   // set old perks
   useEffect(() => {
-
     if (ticket?.perks) {
-
       setSelectedPerks(ticket.perks);
-
     }
-
   }, [ticket]);
 
   // perks handle
   const handlePerksChange = (e) => {
-
     const value = e.target.value;
 
     if (e.target.checked) {
-
-      setSelectedPerks([
-        ...selectedPerks,
-        value,
-      ]);
-
+      setSelectedPerks([...selectedPerks, value]);
     } else {
-
-      const remainingPerks = selectedPerks.filter(
-        (perk) => perk !== value
-      );
+      const remainingPerks = selectedPerks.filter((perk) => perk !== value);
 
       setSelectedPerks(remainingPerks);
-
     }
-
   };
 
   // update ticket
   const handleUpdateTicket = (e) => {
-
     e.preventDefault();
 
     const form = e.target;
 
     const updatedTicket = {
-
       title: form.title.value,
 
       from: form.from.value,
@@ -83,54 +65,39 @@ const UpdateTicket = () => {
     axios
       .put(
         `https://ass-11-server-sigma.vercel.app/${ticket._id}`,
-        updatedTicket
+        updatedTicket,
       )
 
       .then((res) => {
-
         console.log(res.data);
 
         if (res.data.modifiedCount > 0) {
-
           toast.success("Ticket Updated Successfully");
 
           navigate("/dashboard/myAddedTickets");
-
         }
-
       })
 
       .catch((error) => {
-
         console.log(error);
 
         toast.error("Update Failed");
-
       });
-
   };
 
   return (
-
     <div className="max-w-4xl mx-auto px-4 py-10">
-
       {/* heading */}
-      <h1 className="text-4xl font-bold text-center mb-10">
-        Update Ticket
-      </h1>
+      <h1 className="text-4xl font-bold text-center mb-10">Update Ticket</h1>
 
       {/* form */}
       <form
         onSubmit={handleUpdateTicket}
         className="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
-
         {/* title */}
         <div>
-
-          <label className="label font-semibold">
-            Ticket Title
-          </label>
+          <label className="label font-semibold">Ticket Title</label>
 
           <input
             type="text"
@@ -139,15 +106,11 @@ const UpdateTicket = () => {
             className="input input-bordered w-full"
             required
           />
-
         </div>
 
         {/* from */}
         <div>
-
-          <label className="label font-semibold">
-            From
-          </label>
+          <label className="label font-semibold">From</label>
 
           <input
             type="text"
@@ -156,15 +119,11 @@ const UpdateTicket = () => {
             className="input input-bordered w-full"
             required
           />
-
         </div>
 
         {/* to */}
         <div>
-
-          <label className="label font-semibold">
-            To
-          </label>
+          <label className="label font-semibold">To</label>
 
           <input
             type="text"
@@ -173,15 +132,11 @@ const UpdateTicket = () => {
             className="input input-bordered w-full"
             required
           />
-
         </div>
 
         {/* transport */}
         <div>
-
-          <label className="label font-semibold">
-            Transport Type
-          </label>
+          <label className="label font-semibold">Transport Type</label>
 
           <select
             name="transportType"
@@ -189,33 +144,19 @@ const UpdateTicket = () => {
             className="select select-bordered w-full"
             required
           >
+            <option value="Bus">Bus</option>
 
-            <option value="Bus">
-              Bus
-            </option>
+            <option value="Train">Train</option>
 
-            <option value="Train">
-              Train
-            </option>
+            <option value="Launch">Launch</option>
 
-            <option value="Launch">
-              Launch
-            </option>
-
-            <option value="Flight">
-              Flight
-            </option>
-
+            <option value="Flight">Flight</option>
           </select>
-
         </div>
 
         {/* price */}
         <div>
-
-          <label className="label font-semibold">
-            Price
-          </label>
+          <label className="label font-semibold">Price</label>
 
           <input
             type="number"
@@ -224,15 +165,11 @@ const UpdateTicket = () => {
             className="input input-bordered w-full"
             required
           />
-
         </div>
 
         {/* quantity */}
         <div>
-
-          <label className="label font-semibold">
-            Quantity
-          </label>
+          <label className="label font-semibold">Quantity</label>
 
           <input
             type="number"
@@ -241,15 +178,11 @@ const UpdateTicket = () => {
             className="input input-bordered w-full"
             required
           />
-
         </div>
 
         {/* departure date */}
         <div>
-
-          <label className="label font-semibold">
-            Departure Date
-          </label>
+          <label className="label font-semibold">Departure Date</label>
 
           <input
             type="date"
@@ -258,15 +191,11 @@ const UpdateTicket = () => {
             className="input input-bordered w-full"
             required
           />
-
         </div>
 
         {/* departure time */}
         <div>
-
-          <label className="label font-semibold">
-            Departure Time
-          </label>
+          <label className="label font-semibold">Departure Time</label>
 
           <input
             type="text"
@@ -275,15 +204,11 @@ const UpdateTicket = () => {
             className="input input-bordered w-full"
             required
           />
-
         </div>
 
         {/* image */}
         <div className="md:col-span-2">
-
-          <label className="label font-semibold">
-            Image URL
-          </label>
+          <label className="label font-semibold">Image URL</label>
 
           <input
             type="text"
@@ -292,68 +217,45 @@ const UpdateTicket = () => {
             className="input input-bordered w-full"
             required
           />
-
         </div>
 
         {/* perks */}
         <div className="md:col-span-2">
-
-          <label className="label font-semibold mb-2 block">
-            Perks
-          </label>
+          <label className="label font-semibold mb-2 block">Perks</label>
 
           <div className="flex flex-wrap gap-4">
+            {[
+              "AC",
+              "WiFi",
+              "Charging Port",
+              "Meal",
+              "Breakfast",
+              "Dinner",
+              "Cabin",
+              "Sleeper",
+              "Blanket",
+              "Window Seat",
+            ].map((perk) => (
+              <label key={perk} className="label cursor-pointer gap-2">
+                <input
+                  type="checkbox"
+                  value={perk}
+                  checked={selectedPerks.includes(perk)}
+                  onChange={handlePerksChange}
+                  className="checkbox checkbox-primary"
+                />
 
-            {
-              [
-                "AC",
-                "WiFi",
-                "Charging Port",
-                "Meal",
-                "Breakfast",
-                "Dinner",
-                "Cabin",
-                "Sleeper",
-                "Blanket",
-                "Window Seat",
-              ].map((perk) => (
-
-                <label
-                  key={perk}
-                  className="label cursor-pointer gap-2"
-                >
-
-                  <input
-                    type="checkbox"
-                    value={perk}
-                    checked={selectedPerks.includes(perk)}
-                    onChange={handlePerksChange}
-                    className="checkbox checkbox-primary"
-                  />
-
-                  <span>
-                    {perk}
-                  </span>
-
-                </label>
-              ))
-            }
-
+                <span>{perk}</span>
+              </label>
+            ))}
           </div>
-
         </div>
 
         {/* button */}
         <div className="md:col-span-2">
-
-          <button className="btn btn-primary w-full">
-            Update Ticket
-          </button>
-
+          <button className="btn btn-primary w-full">Update Ticket</button>
         </div>
-
       </form>
-
     </div>
   );
 };
