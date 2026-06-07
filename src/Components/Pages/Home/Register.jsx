@@ -10,6 +10,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 import { auth } from "../../../firebase/firebase.init";
+import axios from "axios";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -49,64 +50,93 @@ const Register = () => {
       return;
     }
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => {
+createUserWithEmailAndPassword(auth, email, password)
+  .then(async (result) => {
 
-        console.log(result.user);
+    console.log(result.user);
 
-        // Update User Profile
-        updateProfile(result.user, {
-          displayName: name,
+    // Save User In MongoDB
+    try {
+      await axios.post(
+        "https://ass-11-server-sigma.vercel.app/users",
+        {
+          name,
+          email,
           photoURL: photo,
-        })
-          .then(() => {
+          role: "user",
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
 
-            console.log("Profile Updated");
+    // Update User Profile
+    updateProfile(result.user, {
+      displayName: name,
+      photoURL: photo,
+    })
+      .then(() => {
 
-          })
-          .catch((error) => {
-
-            console.log(error.message);
-
-          });
-
-        form.reset();
-
-        setError("");
-
-        navigate("/");
+        console.log("Profile Updated");
 
       })
       .catch((error) => {
 
         console.log(error.message);
 
-        setError("Registration Failed");
-
       });
+
+    form.reset();
+
+    setError("");
+
+    navigate("/");
+
+  })
+  .catch((error) => {
+
+    console.log(error.message);
+
+    setError("Registration Failed");
+
+  });
   };
 
   // Google Register
-  const handleGoogleSignIn = () => {
+ const handleGoogleSignIn = () => {
 
-    signInWithPopup(auth, googleProvider)
-      .then((result) => {
+  signInWithPopup(auth, googleProvider)
+    .then(async (result) => {
 
-        console.log(result.user);
+      console.log(result.user);
 
-        setError("");
+      try {
+        await axios.post(
+          "https://ass-11-server-sigma.vercel.app/users",
+          {
+            name: result.user.displayName,
+            email: result.user.email,
+            photoURL: result.user.photoURL,
+            role: "user",
+          }
+        );
+      } catch (err) {
+        console.log(err);
+      }
 
-        navigate("/");
+      setError("");
 
-      })
-      .catch((error) => {
+      navigate("/");
 
-        console.log(error.message);
+    })
+    .catch((error) => {
 
-        setError("Google Sign In Failed");
+      console.log(error.message);
 
-      });
-  };
+      setError("Google Sign In Failed");
+
+    });
+};
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
