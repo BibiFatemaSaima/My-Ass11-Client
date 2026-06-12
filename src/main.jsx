@@ -12,7 +12,7 @@ import AuthProvider from "./Components/AuthContext/AuthProvider.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_PK);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

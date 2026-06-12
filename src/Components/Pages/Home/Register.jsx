@@ -15,23 +15,17 @@ import axios from "axios";
 const googleProvider = new GoogleAuthProvider();
 
 const Register = () => {
-
   const [error, setError] = useState("");
-
   const navigate = useNavigate();
 
   const handleRegister = (event) => {
-
     event.preventDefault();
 
     const form = event.target;
 
     const name = form.name.value;
-
     const email = form.email.value;
-
     const password = form.password.value;
-
     const photo = form.photo.value;
 
     // Password Validation
@@ -50,232 +44,138 @@ const Register = () => {
       return;
     }
 
-createUserWithEmailAndPassword(auth, email, password)
-  .then(async (result) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async (result) => {
+        console.log(result.user);
 
-    console.log(result.user);
+        // Firebase profile update
+        await updateProfile(result.user, {
+          displayName: name,
+          photoURL: photo,
+        });
 
-    // Save User In MongoDB
-    try {
-      await axios.post(
-        "https://ass-11-server-sigma.vercel.app/users",
-        {
+        // Save user to MongoDB
+        await axios.post("https://ass-11-server-sigma.vercel.app/users", {
           name,
           email,
           photoURL: photo,
           role: "user",
-        }
-      );
-    } catch (err) {
-      console.log(err);
-    }
+        });
 
-    // Update User Profile
-    updateProfile(result.user, {
-      displayName: name,
-      photoURL: photo,
-    })
-      .then(() => {
+        // 🔥 FIX: save user to localStorage (IMPORTANT)
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name,
+            email,
+            photoURL: photo,
+            role: "user",
+          }),
+        );
 
-        console.log("Profile Updated");
+        form.reset();
+        setError("");
 
+        navigate("/");
       })
       .catch((error) => {
-
         console.log(error.message);
-
+        setError("Registration Failed");
       });
-
-    form.reset();
-
-    setError("");
-
-    navigate("/");
-
-  })
-  .catch((error) => {
-
-    console.log(error.message);
-
-    setError("Registration Failed");
-
-  });
   };
 
-  // Google Register
- const handleGoogleSignIn = () => {
+  // Google Sign In
+  const handleGoogleSignIn = () => {
+    signInWithPopup(auth, googleProvider)
+      .then(async (result) => {
+        console.log(result.user);
 
-  signInWithPopup(auth, googleProvider)
-    .then(async (result) => {
+        await axios.post("https://ass-11-server-sigma.vercel.app/users", {
+          name: result.user.displayName,
+          email: result.user.email,
+          photoURL: result.user.photoURL,
+          role: "user",
+        });
 
-      console.log(result.user);
-
-      try {
-        await axios.post(
-          "https://ass-11-server-sigma.vercel.app/users",
-          {
+        // 🔥 FIX: save Google user to localStorage
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
             name: result.user.displayName,
             email: result.user.email,
             photoURL: result.user.photoURL,
             role: "user",
-          }
+          }),
         );
-      } catch (err) {
-        console.log(err);
-      }
 
-      setError("");
-
-      navigate("/");
-
-    })
-    .catch((error) => {
-
-      console.log(error.message);
-
-      setError("Google Sign In Failed");
-
-    });
-};
+        setError("");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setError("Google Sign In Failed");
+      });
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-
       <div className="card bg-base-100 w-full max-w-sm shadow-2xl p-6">
+        <h1 className="text-3xl font-bold text-center mb-4">Please Register</h1>
 
-        <h1 className="text-3xl font-bold text-center mb-4">
-          Please Register
-        </h1>
-
-        {/* Register Form */}
         <form onSubmit={handleRegister}>
-
           <fieldset className="fieldset space-y-3">
-
-            <label className="label">
-              Name
-            </label>
-
             <input
-              type="text"
               name="name"
+              placeholder="Name"
               className="input input-bordered w-full"
-              placeholder="Enter your name"
               required
             />
 
-            <label className="label">
-              Email
-            </label>
-
             <input
-              type="email"
               name="email"
+              type="email"
+              placeholder="Email"
               className="input input-bordered w-full"
-              placeholder="Enter your email"
               required
             />
 
-            <label className="label">
-              Password
-            </label>
-
             <input
-              type="password"
               name="password"
+              type="password"
+              placeholder="Password"
               className="input input-bordered w-full"
-              placeholder="Enter your password"
               required
             />
-
-            <label className="label">
-              Photo URL
-            </label>
 
             <input
-              type="text"
               name="photo"
+              placeholder="Photo URL"
               className="input input-bordered w-full"
-              placeholder="Enter photo URL"
               required
             />
 
-            {error && (
-              <p className="text-red-500 text-sm">
-                {error}
-              </p>
-            )}
+            {error && <p className="text-red-500 text-sm">{error}</p>}
 
-            <button className="btn btn-neutral w-full mt-2">
-              Register
-            </button>
-
+            <button className="btn btn-neutral w-full">Register</button>
           </fieldset>
-
         </form>
 
-        {/* Divider */}
-        <div className="divider">
-          OR
-        </div>
+        <div className="divider">OR</div>
 
-        {/* Google Register */}
         <button
           onClick={handleGoogleSignIn}
-          className="btn bg-white text-black border border-gray-300 w-full flex gap-2 items-center justify-center"
+          className="btn bg-white text-black border w-full"
         >
-
-          <svg
-            aria-label="Google logo"
-            width="18"
-            height="18"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-          >
-            <g>
-
-              <path
-                fill="#34a853"
-                d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"
-              />
-
-              <path
-                fill="#4285f4"
-                d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"
-              />
-
-              <path
-                fill="#fbbc02"
-                d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"
-              />
-
-              <path
-                fill="#ea4335"
-                d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"
-              />
-
-            </g>
-          </svg>
-
           Register with Google
-
         </button>
 
         <p className="text-center mt-4">
-
-          Already have an account?{" "}
-
-          <Link
-            className="text-blue-500 hover:text-blue-800"
-            to="/login"
-          >
+          Already have account?{" "}
+          <Link className="text-blue-500" to="/login">
             Login
           </Link>
-
         </p>
-
       </div>
-
     </div>
   );
 };

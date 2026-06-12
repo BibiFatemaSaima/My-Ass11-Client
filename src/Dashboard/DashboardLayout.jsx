@@ -1,96 +1,76 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import { AuthContext } from "../Components/AuthContext/AuthContext";
 
 const DashboardLayout = () => {
+  const { user } = useContext(AuthContext);
+
+  // ⚠️ safe role fallback
+  const role = user?.role || "user";
+
   return (
     <div className="drawer lg:drawer-open">
-      {/* drawer toggle */}
       <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" />
 
       {/* MAIN CONTENT */}
-      <div className="drawer-content min-h-screen flex flex-col bg-base-100 relative z-0">
-        {/* mobile navbar */}
-        <div className="navbar bg-base-200 lg:hidden">
-          <div className="flex-none">
-            <label
-              htmlFor="dashboard-drawer"
-              className="btn btn-square btn-ghost"
-            >
-              ☰
-            </label>
-          </div>
+      <div className="drawer-content min-h-screen flex flex-col">
 
-          <div className="flex-1 px-2 text-xl font-bold">Dashboard</div>
+        <div className="navbar bg-base-200 lg:hidden">
+          <label htmlFor="dashboard-drawer" className="btn btn-square btn-ghost">
+            ☰
+          </label>
+          <div className="px-3 font-bold">Dashboard</div>
         </div>
 
-        {/* page content */}
-        <div className="p-6 w-full overflow-x-hidden">
+        <div className="p-6">
           <Outlet />
         </div>
       </div>
 
       {/* SIDEBAR */}
       <div className="drawer-side">
-        <label
-          htmlFor="dashboard-drawer"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        ></label>
+        <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
 
-        <ul className="menu p-4 w-72 min-h-full bg-base-200 text-base-content space-y-2">
-          {/* title */}
-          <h2 className="text-3xl font-bold mb-6 text-center">TicketBari</h2>
+        <ul className="menu p-4 w-72 min-h-full bg-base-200">
 
-          {/* USER LINKS */}
-          <li>
-            <NavLink to="/dashboard/user-profile">User Profile</NavLink>
-          </li>
+          <h2 className="text-3xl font-bold mb-6 text-center">
+            TicketBari
+          </h2>
 
-          <li>
-            <NavLink to="/dashboard/my-booked-tickets">
-              My Booked Tickets
-            </NavLink>
-          </li>
+          {/* USER */}
+          {role === "user" && (
+            <>
+              <li><NavLink to="/dashboard/user-profile">User Profile</NavLink></li>
+              <li><NavLink to="/dashboard/my-booked-tickets">My Booked Tickets</NavLink></li>
+              <li><NavLink to="/dashboard/transaction-history">Transaction History</NavLink></li>
+            </>
+          )}
 
-          <li>
-            <NavLink to="/dashboard/transaction-history">
-              Transaction History
-            </NavLink>
-          </li>
+          {/* VENDOR */}
+          {role === "vendor" && (
+            <>
+              <li><NavLink to="/dashboard/vendor-profile">Vendor Profile</NavLink></li>
+              <li><NavLink to="/dashboard/add-ticket">Add Ticket</NavLink></li>
+              <li><NavLink to="/dashboard/my-added-tickets">My Added Tickets</NavLink></li>
+              <li><NavLink to="/dashboard/requested-bookings">Requested Bookings</NavLink></li>
+              <li><NavLink to="/dashboard/revenue-overview">Revenue Overview</NavLink></li>
+            </>
+          )}
 
-          {/* divider */}
-          <div className="divider">Vendor Panel</div>
+          {/* ADMIN */}
+          {role === "admin" && (
+            <>
+              <li><NavLink to="/dashboard/admin-profile">Admin Profile</NavLink></li>
+              <li><NavLink to="/dashboard/manage-tickets">Manage Tickets</NavLink></li>
+              <li><NavLink to="/dashboard/manage-users">Manage Users</NavLink></li>
+              <li><NavLink to="/dashboard/advertise-tickets">Advertise Tickets</NavLink></li>
+            </>
+          )}
 
-          {/* VENDOR LINKS */}
-          <li>
-            <NavLink to="/dashboard/addTicket">Add Ticket</NavLink>
-          </li>
-
-          <li>
-            <NavLink to="/dashboard/myAddedTickets">My Added Tickets</NavLink>
-          </li>
-
-          <li>
-            <NavLink to="/dashboard/requestedBookings">
-              Requested Bookings
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink to="/dashboard/revenueOverview">Revenue Overview</NavLink>
-          </li>
-
-          {/* divider */}
           <div className="divider"></div>
 
-          {/* MAIN LINKS */}
-          <li>
-            <NavLink to="/">Home</NavLink>
-          </li>
-
-          <li>
-            <NavLink to="/allTickets">All Tickets</NavLink>
-          </li>
+          <li><NavLink to="/">Home</NavLink></li>
+          <li><NavLink to="/all-tickets">All Tickets</NavLink></li>
         </ul>
       </div>
     </div>

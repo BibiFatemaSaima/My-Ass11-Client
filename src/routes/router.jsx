@@ -23,6 +23,7 @@ import RequestedBookings from "../Pages/Vendor/RequestedBookings";
 import RevenueOverview from "../Pages/Vendor/RevenueOverview";
 import PaymentPage from "../Pages/PaymentPage/PaymentPage";
 import CheckoutForm from "../Components/CheckoutForm/CheckoutForm";
+import AdminUsers from "../Pages/Admin/AdminUsers";
 
 export const router = createBrowserRouter([
   // main layout
@@ -156,8 +157,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "checkoutFrom",
-        element:<CheckoutForm/>,
-      }
+        element: <CheckoutForm />,
+      },
+      {
+        path: "adminUsers",
+        element: <AdminUsers />,
+      },
     ],
   },
 ]);
