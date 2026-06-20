@@ -18,7 +18,7 @@ const RevenueOverview = () => {
     if (user?.email) {
       axios
         .get(
-          `http://localhost:3000/vendor/revenue/${user.email}`
+          `https://backend-ticket-server.vercel.appvendor/revenue/${user.email}`,
         )
         .then((res) => {
           setData(res.data);
@@ -41,14 +41,10 @@ const RevenueOverview = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-
-      <h1 className="text-4xl font-bold text-center mb-10">
-        Revenue Overview
-      </h1>
+      <h1 className="text-4xl font-bold text-center mb-10">Revenue Overview</h1>
 
       {/* CARDS */}
       <div className="grid md:grid-cols-4 gap-6">
-
         <div className="card bg-success text-white shadow-xl">
           <div className="card-body text-center">
             <h2>Total Revenue</h2>
@@ -76,7 +72,6 @@ const RevenueOverview = () => {
             <p className="text-4xl font-bold">{data.totalTicketsSold}</p>
           </div>
         </div>
-
       </div>
 
       {/* SUMMARY */}
@@ -84,13 +79,20 @@ const RevenueOverview = () => {
         <div className="card-body">
           <h2 className="text-2xl font-bold mb-4">Summary</h2>
 
-          <p>💰 Revenue: <b>৳{data.totalRevenue}</b></p>
-          <p>✅ Accepted: <b>{data.acceptedBookings}</b></p>
-          <p>⏳ Pending: <b>{data.pendingRequests}</b></p>
-          <p>🎫 Sold: <b>{data.totalTicketsSold}</b></p>
+          <p>
+            💰 Revenue: <b>৳{data.totalRevenue}</b>
+          </p>
+          <p>
+            ✅ Accepted: <b>{data.acceptedBookings}</b>
+          </p>
+          <p>
+            ⏳ Pending: <b>{data.pendingRequests}</b>
+          </p>
+          <p>
+            🎫 Sold: <b>{data.totalTicketsSold}</b>
+          </p>
         </div>
       </div>
-
     </div>
   );
 };

@@ -55,7 +55,7 @@ const Register = () => {
         });
 
         // Save user to MongoDB
-        await axios.post("http://localhost:3000/users", {
+        await axios.post("https://backend-ticket-server.vercel.appusers", {
           name,
           email,
           photoURL: photo,
@@ -76,26 +76,26 @@ const Register = () => {
       });
   };
 
- const handleGoogleSignIn = () => {
-  signInWithPopup(auth, googleProvider)
-    .then(async (result) => {
-      const user = result.user;
+  const handleGoogleSignIn = () => {
+    signInWithPopup(auth, googleProvider)
+      .then(async (result) => {
+        const user = result.user;
 
-      await axios.post("http://localhost:3000/users", {
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        role: "user",
+        await axios.post("https://backend-ticket-server.vercel.appusers", {
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          role: "user",
+        });
+
+        setError("");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setError("Google Sign In Failed");
       });
-
-      setError("");
-      navigate("/");
-    })
-    .catch((error) => {
-      console.log(error.message);
-      setError("Google Sign In Failed");
-    });
-};
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">

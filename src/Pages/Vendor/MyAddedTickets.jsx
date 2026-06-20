@@ -13,7 +13,9 @@ const MyAddedTickets = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`http://localhost:3000/tickets/vendor/${user.email}`)
+        .get(
+          `https://backend-ticket-server.vercel.apptickets/vendor/${user.email}`,
+        )
 
         .then((res) => {
           setTickets(res.data);
@@ -33,7 +35,7 @@ const MyAddedTickets = () => {
 
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:3000/tickets/${_id}`)
+        .delete(`https://backend-ticket-server.vercel.apptickets/${_id}`)
 
         .then((res) => {
           if (res.data.deletedCount > 0) {

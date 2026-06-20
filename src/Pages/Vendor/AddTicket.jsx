@@ -57,7 +57,7 @@ const AddTicket = () => {
     };
 
     axios
-      .post("http://localhost:3000/tickets", ticketData)
+      .post("https://backend-ticket-server.vercel.apptickets", ticketData)
 
       .then((res) => {
         console.log(res.data);

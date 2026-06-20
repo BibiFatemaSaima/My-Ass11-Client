@@ -14,7 +14,7 @@ const MyBookedTickets = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`http://localhost:3000/bookings/${user.email}`)
+        .get(`https://backend-ticket-server.vercel.appbookings/${user.email}`)
 
         .then((res) => {
           setBookings(res.data);

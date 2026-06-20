@@ -23,9 +23,7 @@ const UpdateTicket = () => {
     const value = e.target.value;
 
     setSelectedPerks((prev) =>
-      e.target.checked
-        ? [...prev, value]
-        : prev.filter((p) => p !== value)
+      e.target.checked ? [...prev, value] : prev.filter((p) => p !== value),
     );
   };
 
@@ -50,7 +48,10 @@ const UpdateTicket = () => {
     };
 
     axios
-      .put(`http://localhost:3000/tickets/${ticket?._id}`, updatedTicket)
+      .put(
+        `https://backend-ticket-server.vercel.apptickets/${ticket?._id}`,
+        updatedTicket,
+      )
       .then((res) => {
         if (res.data.modifiedCount > 0) {
           toast.success("Ticket Updated Successfully");
@@ -65,18 +66,12 @@ const UpdateTicket = () => {
 
   // ✅ IMPORTANT: loader empty hole crash prevent
   if (!ticket) {
-    return (
-      <div className="text-center mt-20 text-xl">
-        Loading ticket...
-      </div>
-    );
+    return <div className="text-center mt-20 text-xl">Loading ticket...</div>;
   }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
-      <h1 className="text-4xl font-bold text-center mb-10">
-        Update Ticket
-      </h1>
+      <h1 className="text-4xl font-bold text-center mb-10">Update Ticket</h1>
 
       <form
         onSubmit={handleUpdateTicket}
@@ -170,9 +165,7 @@ const UpdateTicket = () => {
           </div>
         </div>
 
-        <button className="btn btn-primary md:col-span-2">
-          Update Ticket
-        </button>
+        <button className="btn btn-primary md:col-span-2">Update Ticket</button>
       </form>
     </div>
   );

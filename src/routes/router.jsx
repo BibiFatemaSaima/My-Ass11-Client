@@ -29,7 +29,6 @@ import ManageTickets from "../Pages/Admin/ManageTickets";
 import AdvertiseTickets from "../Pages/Admin/AdvertiseTickets";
 import ManageUsers from "../Pages/Admin/ManageUsers";
 
-
 export const router = createBrowserRouter([
   // main layout
   {
@@ -86,7 +85,9 @@ export const router = createBrowserRouter([
         ),
 
         loader: async ({ params }) => {
-          const res = await fetch(`http://localhost:3000/tickets/${params.id}`);
+          const res = await fetch(
+            `https://backend-ticket-server.vercel.apptickets/${params.id}`,
+          );
 
           return res.json();
         },
@@ -138,7 +139,9 @@ export const router = createBrowserRouter([
         path: "updateTicket/:id",
         element: <UpdateTicket />,
         loader: async ({ params }) => {
-          const res = await fetch(`http://localhost:3000/tickets/${params.id}`);
+          const res = await fetch(
+            `https://backend-ticket-server.vercel.apptickets/${params.id}`,
+          );
           return res.json();
         },
       },
@@ -153,7 +156,7 @@ export const router = createBrowserRouter([
       {
         path: "payment/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/booking/${params.id}`),
+          fetch(`https://backend-ticket-server.vercel.appbooking/${params.id}`),
         element: <PaymentPage />,
       },
       {
@@ -166,20 +169,20 @@ export const router = createBrowserRouter([
       },
       {
         path: "vendor-profile",
-        element: <VendorProfile/>,
+        element: <VendorProfile />,
       },
       {
         path: "manage-tickets",
-        element: <ManageTickets/>,
+        element: <ManageTickets />,
       },
       {
         path: "advertise-tickets",
-        element: <AdvertiseTickets/>,
+        element: <AdvertiseTickets />,
       },
       {
         path: "manageUsers",
-        element: <ManageUsers/>,
-      }
+        element: <ManageUsers />,
+      },
     ],
   },
 ]);

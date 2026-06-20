@@ -5,21 +5,25 @@ const ManageTickets = () => {
   const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/tickets").then((res) => {
+    axios.get("https://backend-ticket-server.vercel.apptickets").then((res) => {
       setTickets(res.data);
     });
   }, []);
 
   const approve = (id) => {
-    axios.patch(`http://localhost:3000/tickets/approve/${id}`).then(() => {
-      alert("Approved");
-    });
+    axios
+      .patch(`https://backend-ticket-server.vercel.apptickets/approve/${id}`)
+      .then(() => {
+        alert("Approved");
+      });
   };
 
   const reject = (id) => {
-    axios.patch(`http://localhost:3000/tickets/reject/${id}`).then(() => {
-      alert("Rejected");
-    });
+    axios
+      .patch(`https://backend-ticket-server.vercel.apptickets/reject/${id}`)
+      .then(() => {
+        alert("Rejected");
+      });
   };
 
   return (
@@ -41,7 +45,9 @@ const ManageTickets = () => {
           {tickets.map((t) => (
             <tr key={t._id}>
               <td>{t.title}</td>
-              <td>{t.from} → {t.to}</td>
+              <td>
+                {t.from} → {t.to}
+              </td>
               <td>{t.price}</td>
               <td>{t.status}</td>
 

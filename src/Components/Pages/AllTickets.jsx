@@ -24,7 +24,7 @@ const AllTickets = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/tickets")
+      .get("https://backend-ticket-server.vercel.apptickets")
 
       .then((res) => {
         // only approved tickets

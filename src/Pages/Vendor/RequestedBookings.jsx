@@ -16,7 +16,9 @@ const RequestedBookings = () => {
     if (user?.email) {
       axios
 
-        .get(`http://localhost:3000/requestedBookings/${user.email.toLowerCase()}`)
+        .get(
+          `https://backend-ticket-server.vercel.apprequestedBookings/${user.email.toLowerCase()}`,
+        )
 
         .then((res) => {
           setBookings(res.data);
@@ -32,7 +34,7 @@ const RequestedBookings = () => {
   const handleAccept = (id) => {
     axios
 
-      .patch(`http://localhost:3000/bookings/accept/${id}`)
+      .patch(`https://backend-ticket-server.vercel.appbookings/accept/${id}`)
 
       .then((res) => {
         if (res.data.modifiedCount > 0) {
@@ -57,7 +59,7 @@ const RequestedBookings = () => {
   const handleReject = (id) => {
     axios
 
-      .patch(`http://localhost:3000/bookings/reject/${id}`)
+      .patch(`https://backend-ticket-server.vercel.appbookings/reject/${id}`)
 
       .then((res) => {
         if (res.data.modifiedCount > 0) {

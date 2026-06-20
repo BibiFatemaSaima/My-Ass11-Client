@@ -7,7 +7,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/tickets")
+      .get("https://backend-ticket-server.vercel.apptickets")
 
       .then((res) => {
         setTickets(res.data);
