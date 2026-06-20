@@ -51,13 +51,13 @@ const AddTicket = () => {
       image,
       vendorName: user?.displayName,
       vendorEmail: user?.email,
-      status: "pending",
+      status: "approved",
       advertised: false,
       createdAt: new Date(),
     };
 
     axios
-      .post("https://ass-11-server-sigma.vercel.app/tickets", ticketData)
+      .post("http://localhost:3000/tickets", ticketData)
 
       .then((res) => {
         console.log(res.data);

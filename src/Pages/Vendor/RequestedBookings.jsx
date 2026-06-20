@@ -16,9 +16,7 @@ const RequestedBookings = () => {
     if (user?.email) {
       axios
 
-        .get(
-          `https://ass-11-server-sigma.vercel.app/requestedBookings/${user.email}`,
-        )
+        .get(`http://localhost:3000/requestedBookings/${user.email.toLowerCase()}`)
 
         .then((res) => {
           setBookings(res.data);
@@ -34,19 +32,17 @@ const RequestedBookings = () => {
   const handleAccept = (id) => {
     axios
 
-      .patch(`https://ass-11-server-sigma.vercel.app/bookings/accept/${id}`)
+      .patch(`http://localhost:3000/bookings/accept/${id}`)
 
       .then((res) => {
         if (res.data.modifiedCount > 0) {
           toast.success("Booking Accepted");
 
-          const updatedBookings = bookings.map((booking) => {
-            if (booking._id === id) {
-              booking.bookingStatus = "accepted";
-            }
-
-            return booking;
-          });
+          const updatedBookings = bookings.map((booking) =>
+            booking._id === id
+              ? { ...booking, bookingStatus: "accepted" }
+              : booking,
+          );
 
           setBookings(updatedBookings);
         }
@@ -61,19 +57,17 @@ const RequestedBookings = () => {
   const handleReject = (id) => {
     axios
 
-      .patch(`https://ass-11-server-sigma.vercel.app/bookings/reject/${id}`)
+      .patch(`http://localhost:3000/bookings/reject/${id}`)
 
       .then((res) => {
         if (res.data.modifiedCount > 0) {
           toast.success("Booking Rejected");
 
-          const updatedBookings = bookings.map((booking) => {
-            if (booking._id === id) {
-              booking.bookingStatus = "rejected";
-            }
-
-            return booking;
-          });
+          const updatedBookings = bookings.map((booking) =>
+            booking._id === id
+              ? { ...booking, bookingStatus: "rejected" }
+              : booking,
+          );
 
           setBookings(updatedBookings);
         }

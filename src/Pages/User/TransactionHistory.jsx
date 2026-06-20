@@ -12,7 +12,7 @@ const TransactionHistory = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`https://ass-11-server-sigma.vercel.app/${user.email}`)
+        .get(`http://localhost:3000/${user.email}`)
 
         .then((res) => {
           setTransactions(res.data);

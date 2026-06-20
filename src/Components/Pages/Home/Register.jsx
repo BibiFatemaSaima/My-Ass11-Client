@@ -55,23 +55,15 @@ const Register = () => {
         });
 
         // Save user to MongoDB
-        await axios.post("https://ass-11-server-sigma.vercel.app/users", {
+        await axios.post("http://localhost:3000/users", {
           name,
           email,
           photoURL: photo,
           role: "user",
+          createdAt: new Date(),
         });
 
         // 🔥 FIX: save user to localStorage (IMPORTANT)
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            name,
-            email,
-            photoURL: photo,
-            role: "user",
-          }),
-        );
 
         form.reset();
         setError("");
@@ -84,38 +76,26 @@ const Register = () => {
       });
   };
 
-  // Google Sign In
-  const handleGoogleSignIn = () => {
-    signInWithPopup(auth, googleProvider)
-      .then(async (result) => {
-        console.log(result.user);
+ const handleGoogleSignIn = () => {
+  signInWithPopup(auth, googleProvider)
+    .then(async (result) => {
+      const user = result.user;
 
-        await axios.post("https://ass-11-server-sigma.vercel.app/users", {
-          name: result.user.displayName,
-          email: result.user.email,
-          photoURL: result.user.photoURL,
-          role: "user",
-        });
-
-        // 🔥 FIX: save Google user to localStorage
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            name: result.user.displayName,
-            email: result.user.email,
-            photoURL: result.user.photoURL,
-            role: "user",
-          }),
-        );
-
-        setError("");
-        navigate("/");
-      })
-      .catch((error) => {
-        console.log(error.message);
-        setError("Google Sign In Failed");
+      await axios.post("http://localhost:3000/users", {
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        role: "user",
       });
-  };
+
+      setError("");
+      navigate("/");
+    })
+    .catch((error) => {
+      console.log(error.message);
+      setError("Google Sign In Failed");
+    });
+};
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">

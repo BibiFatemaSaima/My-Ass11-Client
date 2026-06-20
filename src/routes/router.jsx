@@ -24,6 +24,11 @@ import RevenueOverview from "../Pages/Vendor/RevenueOverview";
 import PaymentPage from "../Pages/PaymentPage/PaymentPage";
 import CheckoutForm from "../Components/CheckoutForm/CheckoutForm";
 import AdminUsers from "../Pages/Admin/AdminUsers";
+import VendorProfile from "../Pages/Vendor/VendorProfile";
+import ManageTickets from "../Pages/Admin/ManageTickets";
+import AdvertiseTickets from "../Pages/Admin/AdvertiseTickets";
+import ManageUsers from "../Pages/Admin/ManageUsers";
+
 
 export const router = createBrowserRouter([
   // main layout
@@ -81,9 +86,7 @@ export const router = createBrowserRouter([
         ),
 
         loader: async ({ params }) => {
-          const res = await fetch(
-            `https://ass-11-server-sigma.vercel.app/tickets/${params.id}`,
-          );
+          const res = await fetch(`http://localhost:3000/tickets/${params.id}`);
 
           return res.json();
         },
@@ -135,24 +138,22 @@ export const router = createBrowserRouter([
         path: "updateTicket/:id",
         element: <UpdateTicket />,
         loader: async ({ params }) => {
-          const res = await fetch(
-            `https://ass-11-server-sigma.vercel.app/tickets/${params.id}`,
-          );
+          const res = await fetch(`http://localhost:3000/tickets/${params.id}`);
           return res.json();
         },
       },
       {
-        path: "requestedBookings",
+        path: "requested-bookings",
         element: <RequestedBookings />,
       },
       {
-        path: "revenueOverview",
+        path: "revenue-overview",
         element: <RevenueOverview />,
       },
       {
-        path: "/dashboard/payment/:id",
+        path: "payment/:id",
         loader: ({ params }) =>
-          fetch(`https://ass-11-server-sigma.vercel.app/booking/${params.id}`),
+          fetch(`http://localhost:3000/booking/${params.id}`),
         element: <PaymentPage />,
       },
       {
@@ -160,9 +161,25 @@ export const router = createBrowserRouter([
         element: <CheckoutForm />,
       },
       {
-        path: "adminUsers",
+        path: "admin-users",
         element: <AdminUsers />,
       },
+      {
+        path: "vendor-profile",
+        element: <VendorProfile/>,
+      },
+      {
+        path: "manage-tickets",
+        element: <ManageTickets/>,
+      },
+      {
+        path: "advertise-tickets",
+        element: <AdvertiseTickets/>,
+      },
+      {
+        path: "manageUsers",
+        element: <ManageUsers/>,
+      }
     ],
   },
 ]);

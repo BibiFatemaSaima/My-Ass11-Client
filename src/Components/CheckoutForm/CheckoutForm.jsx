@@ -20,7 +20,7 @@ const CheckoutForm = ({ booking }) => {
   // =======================
   useEffect(() => {
     axios
-      .post("https://ass-11-server-sigma.vercel.app/create-payment-intent", {
+      .post("http://localhost:3000/create-payment-intent", {
         totalPrice: booking.totalPrice,
       })
 
@@ -95,7 +95,7 @@ const CheckoutForm = ({ booking }) => {
 
       try {
         const res = await axios.patch(
-          `https://ass-11-server-sigma.vercel.app/bookings/${booking._id}`,
+          `http://localhost:3000/bookings/${booking._id}`,
           paymentInfo,
         );
 

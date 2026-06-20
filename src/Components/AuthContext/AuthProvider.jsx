@@ -10,12 +10,13 @@ import {
 import { auth } from "../../firebase/firebase.init";
 
 import { AuthContext } from "./AuthContext";
+import axios from "axios";
 
 const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-
+  const [role, setRole] = useState("user");
   const [loading, setLoading] = useState(true);
 
   // Google Sign In
@@ -30,19 +31,34 @@ const AuthProvider = ({ children }) => {
 
   // User Observer
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (!currentUser) {
+        setUser(null);
+        setRole("user");
+        setLoading(false);
+        return;
+      }
+
       setUser(currentUser);
+
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/users/${currentUser.email}`,
+        );
+        setRole(res.data?.role || "user");
+      } catch (error) {
+        setRole("user");
+      }
 
       setLoading(false);
     });
 
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
 
   const authInfo = {
     user,
+    role,
     loading,
     googleSignIn,
     logOut,

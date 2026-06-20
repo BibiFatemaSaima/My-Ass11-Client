@@ -3,55 +3,75 @@ import axios from "axios";
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // ✅ correct base URL
-  const BASE_URL = "https://ass-11-server-sigma.vercel.app";
+  const BASE_URL = "http://localhost:3000";
 
   useEffect(() => {
-    axios
-      .get(`${BASE_URL}/users`)
-      .then((res) => {
-        setUsers(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log("Error loading users:", err);
-        setLoading(false);
-      });
+    axios.get(`${BASE_URL}/users`).then((res) => {
+      setUsers(res.data);
+    });
   }, []);
 
-  if (loading) {
-    return <p>Loading users...</p>;
-  }
+  const makeAdmin = (id) => {
+    axios.patch(`${BASE_URL}/users/admin/${id}`).then(() => {
+      setUsers((prev) =>
+        prev.map((u) =>
+          u._id === id ? { ...u, role: "admin" } : u
+        )
+      );
+    });
+  };
+
+  const makeVendor = (id) => {
+    axios.patch(`${BASE_URL}/users/vendor/${id}`).then(() => {
+      setUsers((prev) =>
+        prev.map((u) =>
+          u._id === id ? { ...u, role: "vendor" } : u
+        )
+      );
+    });
+  };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Admin - All Users</h2>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">Manage Users</h2>
 
-      {users.length === 0 ? (
-        <p>No users found</p>
-      ) : (
-        <table border="1" cellPadding="10">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
+      <table className="table w-full">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {users.map((u) => (
+            <tr key={u._id}>
+              <td>{u.name}</td>
+              <td>{u.email}</td>
+              <td>{u.role}</td>
+
+              <td className="space-x-2">
+                <button
+                  onClick={() => makeAdmin(u._id)}
+                  className="btn btn-sm btn-primary"
+                >
+                  Make Admin
+                </button>
+
+                <button
+                  onClick={() => makeVendor(u._id)}
+                  className="btn btn-sm btn-secondary"
+                >
+                  Make Vendor
+                </button>
+              </td>
             </tr>
-          </thead>
-
-          <tbody>
-            {users.map((user) => (
-              <tr key={user._id}>
-                <td>{user.name || "N/A"}</td>
-                <td>{user.email}</td>
-                <td>{user.role || "user"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

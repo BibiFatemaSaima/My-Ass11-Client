@@ -1,35 +1,32 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import { useLoaderData, useNavigate } from "react-router-dom";
-
 import { toast } from "react-toastify";
 
 const UpdateTicket = () => {
   const ticket = useLoaderData();
-
   const navigate = useNavigate();
 
   const [selectedPerks, setSelectedPerks] = useState([]);
 
-  // set old perks
+  // ✅ SAFE INIT
   useEffect(() => {
-    if (ticket?.perks) {
+    if (ticket?.perks && Array.isArray(ticket.perks)) {
       setSelectedPerks(ticket.perks);
+    } else {
+      setSelectedPerks([]);
     }
   }, [ticket]);
 
-  // perks handle
+  // checkbox handler
   const handlePerksChange = (e) => {
     const value = e.target.value;
 
-    if (e.target.checked) {
-      setSelectedPerks([...selectedPerks, value]);
-    } else {
-      const remainingPerks = selectedPerks.filter((perk) => perk !== value);
-
-      setSelectedPerks(remainingPerks);
-    }
+    setSelectedPerks((prev) =>
+      e.target.checked
+        ? [...prev, value]
+        : prev.filter((p) => p !== value)
+    );
   };
 
   // update ticket
@@ -40,190 +37,117 @@ const UpdateTicket = () => {
 
     const updatedTicket = {
       title: form.title.value,
-
       from: form.from.value,
-
       to: form.to.value,
-
       transportType: form.transportType.value,
-
-      price: parseInt(form.price.value),
-
-      quantity: parseInt(form.quantity.value),
-
+      price: Number(form.price.value),
+      quantity: Number(form.quantity.value),
       departureDate: form.departureDate.value,
-
       departureTime: form.departureTime.value,
-
       image: form.image.value,
-
       perks: selectedPerks,
-
       status: "pending",
     };
 
     axios
-      .put(
-        `https://ass-11-server-sigma.vercel.app/${ticket._id}`,
-        updatedTicket,
-      )
-
+      .put(`http://localhost:3000/tickets/${ticket?._id}`, updatedTicket)
       .then((res) => {
-        console.log(res.data);
-
         if (res.data.modifiedCount > 0) {
           toast.success("Ticket Updated Successfully");
-
           navigate("/dashboard/myAddedTickets");
         }
       })
-
-      .catch((error) => {
-        console.log(error);
-
+      .catch((err) => {
+        console.log(err);
         toast.error("Update Failed");
       });
   };
 
+  // ✅ IMPORTANT: loader empty hole crash prevent
+  if (!ticket) {
+    return (
+      <div className="text-center mt-20 text-xl">
+        Loading ticket...
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
-      {/* heading */}
-      <h1 className="text-4xl font-bold text-center mb-10">Update Ticket</h1>
+      <h1 className="text-4xl font-bold text-center mb-10">
+        Update Ticket
+      </h1>
 
-      {/* form */}
       <form
         onSubmit={handleUpdateTicket}
         className="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
-        {/* title */}
-        <div>
-          <label className="label font-semibold">Ticket Title</label>
+        <input
+          name="title"
+          defaultValue={ticket.title}
+          className="input input-bordered w-full"
+          placeholder="Title"
+        />
 
-          <input
-            type="text"
-            name="title"
-            defaultValue={ticket.title}
-            className="input input-bordered w-full"
-            required
-          />
-        </div>
+        <input
+          name="from"
+          defaultValue={ticket.from}
+          className="input input-bordered w-full"
+        />
 
-        {/* from */}
-        <div>
-          <label className="label font-semibold">From</label>
+        <input
+          name="to"
+          defaultValue={ticket.to}
+          className="input input-bordered w-full"
+        />
 
-          <input
-            type="text"
-            name="from"
-            defaultValue={ticket.from}
-            className="input input-bordered w-full"
-            required
-          />
-        </div>
+        <select
+          name="transportType"
+          defaultValue={ticket.transportType}
+          className="select select-bordered w-full"
+        >
+          <option>Bus</option>
+          <option>Train</option>
+          <option>Launch</option>
+          <option>Flight</option>
+        </select>
 
-        {/* to */}
-        <div>
-          <label className="label font-semibold">To</label>
+        <input
+          name="price"
+          type="number"
+          defaultValue={ticket.price}
+          className="input input-bordered w-full"
+        />
 
-          <input
-            type="text"
-            name="to"
-            defaultValue={ticket.to}
-            className="input input-bordered w-full"
-            required
-          />
-        </div>
+        <input
+          name="quantity"
+          type="number"
+          defaultValue={ticket.quantity}
+          className="input input-bordered w-full"
+        />
 
-        {/* transport */}
-        <div>
-          <label className="label font-semibold">Transport Type</label>
+        <input
+          name="departureDate"
+          type="date"
+          defaultValue={ticket.departureDate}
+          className="input input-bordered w-full"
+        />
 
-          <select
-            name="transportType"
-            defaultValue={ticket.transportType}
-            className="select select-bordered w-full"
-            required
-          >
-            <option value="Bus">Bus</option>
+        <input
+          name="departureTime"
+          defaultValue={ticket.departureTime}
+          className="input input-bordered w-full"
+        />
 
-            <option value="Train">Train</option>
-
-            <option value="Launch">Launch</option>
-
-            <option value="Flight">Flight</option>
-          </select>
-        </div>
-
-        {/* price */}
-        <div>
-          <label className="label font-semibold">Price</label>
-
-          <input
-            type="number"
-            name="price"
-            defaultValue={ticket.price}
-            className="input input-bordered w-full"
-            required
-          />
-        </div>
-
-        {/* quantity */}
-        <div>
-          <label className="label font-semibold">Quantity</label>
-
-          <input
-            type="number"
-            name="quantity"
-            defaultValue={ticket.quantity}
-            className="input input-bordered w-full"
-            required
-          />
-        </div>
-
-        {/* departure date */}
-        <div>
-          <label className="label font-semibold">Departure Date</label>
-
-          <input
-            type="date"
-            name="departureDate"
-            defaultValue={ticket.departureDate}
-            className="input input-bordered w-full"
-            required
-          />
-        </div>
-
-        {/* departure time */}
-        <div>
-          <label className="label font-semibold">Departure Time</label>
-
-          <input
-            type="text"
-            name="departureTime"
-            defaultValue={ticket.departureTime}
-            className="input input-bordered w-full"
-            required
-          />
-        </div>
-
-        {/* image */}
-        <div className="md:col-span-2">
-          <label className="label font-semibold">Image URL</label>
-
-          <input
-            type="text"
-            name="image"
-            defaultValue={ticket.image}
-            className="input input-bordered w-full"
-            required
-          />
-        </div>
+        <input
+          name="image"
+          defaultValue={ticket.image}
+          className="input input-bordered w-full md:col-span-2"
+        />
 
         {/* perks */}
         <div className="md:col-span-2">
-          <label className="label font-semibold mb-2 block">Perks</label>
-
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-3">
             {[
               "AC",
               "WiFi",
@@ -232,29 +156,23 @@ const UpdateTicket = () => {
               "Breakfast",
               "Dinner",
               "Cabin",
-              "Sleeper",
-              "Blanket",
-              "Window Seat",
             ].map((perk) => (
-              <label key={perk} className="label cursor-pointer gap-2">
+              <label key={perk} className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   value={perk}
                   checked={selectedPerks.includes(perk)}
                   onChange={handlePerksChange}
-                  className="checkbox checkbox-primary"
                 />
-
-                <span>{perk}</span>
+                {perk}
               </label>
             ))}
           </div>
         </div>
 
-        {/* button */}
-        <div className="md:col-span-2">
-          <button className="btn btn-primary w-full">Update Ticket</button>
-        </div>
+        <button className="btn btn-primary md:col-span-2">
+          Update Ticket
+        </button>
       </form>
     </div>
   );

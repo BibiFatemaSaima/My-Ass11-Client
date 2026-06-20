@@ -15,7 +15,7 @@ const stripePromise = loadStripe(
 
 const PaymentPage = () => {
 
-  const booking = useLoaderData();
+  const booking = useLoaderData() || {};
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
@@ -33,7 +33,7 @@ const PaymentPage = () => {
             <span className="font-bold">
               Ticket Name:
             </span>{" "}
-            {booking.ticketTitle}
+            {booking.title}
           </p>
 
           <p className="text-xl">
