@@ -20,7 +20,7 @@ const CheckoutForm = ({ booking }) => {
   // =======================
   useEffect(() => {
     axios
-      .post("https://backend-ticket-server.vercel.appcreate-payment-intent", {
+      .post("https://backend-ticket-server.vercel.app/create-payment-intent", {
         totalPrice: booking.totalPrice,
       })
 
@@ -95,7 +95,7 @@ const CheckoutForm = ({ booking }) => {
 
       try {
         const res = await axios.patch(
-          `https://backend-ticket-server.vercel.appbookings/${booking._id}`,
+          `https://backend-ticket-server.vercel.app/bookings/${booking._id}`,
           paymentInfo,
         );
 

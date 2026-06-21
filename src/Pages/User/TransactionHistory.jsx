@@ -12,7 +12,7 @@ const TransactionHistory = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`https://backend-ticket-server.vercel.app${user.email}`)
+        .get(`https://backend-ticket-server.vercel.app/bookings/${user.email}`)
 
         .then((res) => {
           setTransactions(res.data);

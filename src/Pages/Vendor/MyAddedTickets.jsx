@@ -14,7 +14,7 @@ const MyAddedTickets = () => {
     if (user?.email) {
       axios
         .get(
-          `https://backend-ticket-server.vercel.apptickets/vendor/${user.email}`,
+          `https://backend-ticket-server.vercel.app/tickets/vendor/${user.email}`,
         )
 
         .then((res) => {
@@ -35,7 +35,7 @@ const MyAddedTickets = () => {
 
     if (confirmDelete) {
       axios
-        .delete(`https://backend-ticket-server.vercel.apptickets/${_id}`)
+        .delete(`https://backend-ticket-server.vercel.app/tickets/${_id}`)
 
         .then((res) => {
           if (res.data.deletedCount > 0) {

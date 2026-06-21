@@ -16,19 +16,19 @@ const VendorProfile = () => {
     if (user?.email) {
       Promise.all([
         axios.get(
-          `https://backend-ticket-server.vercel.appvendor/totalTickets/${user.email}`,
+          `https://backend-ticket-server.vercel.app/vendor/totalTickets/${user.email}`,
         ),
 
         axios.get(
-          `https://backend-ticket-server.vercel.appvendor/pendingRequests/${user.email}`,
+          `https://backend-ticket-server.vercel.app/vendor/pendingRequests/${user.email}`,
         ),
 
         axios.get(
-          `https://backend-ticket-server.vercel.appvendor/acceptedBookings/${user.email}`,
+          `https://backend-ticket-server.vercel.app/vendor/acceptedBookings/${user.email}`,
         ),
 
         axios.get(
-          `https://backend-ticket-server.vercel.appvendor/revenue/${user.email}`,
+          `https://backend-ticket-server.vercel.app/vendor/revenue/${user.email}`,
         ),
       ])
         .then(([tickets, pending, accepted, revenue]) => {

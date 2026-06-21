@@ -82,7 +82,7 @@ const TicketDetails = () => {
     // save booking
     axios
 
-      .post("https://backend-ticket-server.vercel.appbookings", bookingData)
+      .post("https://backend-ticket-server.vercel.app/bookings", bookingData)
 
       .then((res) => {
         console.log(res.data);

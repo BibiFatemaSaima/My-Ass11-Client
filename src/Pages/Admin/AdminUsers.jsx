@@ -4,7 +4,7 @@ import axios from "axios";
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
 
-  const BASE_URL = "http://localhost:3000";
+  const BASE_URL = "https://backend-ticket-server.vercel.app/";
 
   useEffect(() => {
     axios.get(`${BASE_URL}/users`).then((res) => {

@@ -86,7 +86,7 @@ export const router = createBrowserRouter([
 
         loader: async ({ params }) => {
           const res = await fetch(
-            `https://backend-ticket-server.vercel.apptickets/${params.id}`,
+            `https://backend-ticket-server.vercel.app/tickets/${params.id}`,
           );
 
           return res.json();
@@ -140,7 +140,7 @@ export const router = createBrowserRouter([
         element: <UpdateTicket />,
         loader: async ({ params }) => {
           const res = await fetch(
-            `https://backend-ticket-server.vercel.apptickets/${params.id}`,
+            `https://backend-ticket-server.vercel.app/tickets/${params.id}`,
           );
           return res.json();
         },
@@ -156,7 +156,7 @@ export const router = createBrowserRouter([
       {
         path: "payment/:id",
         loader: ({ params }) =>
-          fetch(`https://backend-ticket-server.vercel.appbooking/${params.id}`),
+          fetch(`https://backend-ticket-server.vercel.app/booking/${params.id}`),
         element: <PaymentPage />,
       },
       {

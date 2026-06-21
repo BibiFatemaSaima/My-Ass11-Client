@@ -49,7 +49,7 @@ const UpdateTicket = () => {
 
     axios
       .put(
-        `https://backend-ticket-server.vercel.apptickets/${ticket?._id}`,
+        `https://backend-ticket-server.vercel.app/tickets/${ticket?._id}`,
         updatedTicket,
       )
       .then((res) => {

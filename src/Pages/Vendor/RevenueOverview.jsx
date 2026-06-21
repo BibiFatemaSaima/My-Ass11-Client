@@ -18,7 +18,7 @@ const RevenueOverview = () => {
     if (user?.email) {
       axios
         .get(
-          `https://backend-ticket-server.vercel.appvendor/revenue/${user.email}`,
+          `https://backend-ticket-server.vercel.app/vendor/revenue/${user.email}`,
         )
         .then((res) => {
           setData(res.data);

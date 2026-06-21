@@ -43,7 +43,7 @@ const AuthProvider = ({ children }) => {
 
       try {
         const res = await axios.get(
-          `https://backend-ticket-server.vercel.appusers/${currentUser.email}`,
+          `https://backend-ticket-server.vercel.app/users/${currentUser.email}`,
         );
         setRole(res.data?.role || "user");
       } catch (error) {

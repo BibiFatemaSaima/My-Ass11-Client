@@ -17,7 +17,7 @@ const RequestedBookings = () => {
       axios
 
         .get(
-          `https://backend-ticket-server.vercel.apprequestedBookings/${user.email.toLowerCase()}`,
+          `https://backend-ticket-server.vercel.app/requestedBookings/${user.email.toLowerCase()}`,
         )
 
         .then((res) => {
@@ -34,7 +34,7 @@ const RequestedBookings = () => {
   const handleAccept = (id) => {
     axios
 
-      .patch(`https://backend-ticket-server.vercel.appbookings/accept/${id}`)
+      .patch(`https://backend-ticket-server.vercel.app/bookings/accept/${id}`)
 
       .then((res) => {
         if (res.data.modifiedCount > 0) {
@@ -59,7 +59,7 @@ const RequestedBookings = () => {
   const handleReject = (id) => {
     axios
 
-      .patch(`https://backend-ticket-server.vercel.appbookings/reject/${id}`)
+      .patch(`https://backend-ticket-server.vercel.app/bookings/reject/${id}`)
 
       .then((res) => {
         if (res.data.modifiedCount > 0) {
@@ -138,12 +138,12 @@ const RequestedBookings = () => {
                           ? "badge-info"
                           : booking.bookingStatus === "rejected"
                             ? "badge-error"
-                            : booking.bookingStatus === "paid"
+                            : booking.paymentStatus === "paid"
                               ? "badge-success"
                               : "badge-warning"
                       }`}
                     >
-                      {booking.bookingStatus}
+                      {booking.paymentStatus === "paid"? "paid": booking.bookingStatus}
                     </span>
                   </td>
 

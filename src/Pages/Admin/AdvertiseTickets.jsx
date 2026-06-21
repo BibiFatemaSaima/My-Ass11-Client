@@ -5,14 +5,14 @@ const AdvertiseTickets = () => {
   const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
-    axios.get("https://backend-ticket-server.vercel.apptickets").then((res) => {
+    axios.get("https://backend-ticket-server.vercel.app/tickets").then((res) => {
       setTickets(res.data);
     });
   }, []);
 
   const toggleAdvertise = (id, current) => {
     axios.patch(
-      `https://backend-ticket-server.vercel.apptickets/advertise/${id}`,
+      `https://backend-ticket-server.vercel.app/tickets/advertise/${id}`,
       {
         advertised: !current,
       },

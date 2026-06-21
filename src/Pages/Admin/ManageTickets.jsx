@@ -5,14 +5,14 @@ const ManageTickets = () => {
   const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
-    axios.get("https://backend-ticket-server.vercel.apptickets").then((res) => {
+    axios.get("https://backend-ticket-server.vercel.app/tickets").then((res) => {
       setTickets(res.data);
     });
   }, []);
 
   const approve = (id) => {
     axios
-      .patch(`https://backend-ticket-server.vercel.apptickets/approve/${id}`)
+      .patch(`https://backend-ticket-server.vercel.app/tickets/approve/${id}`)
       .then(() => {
         alert("Approved");
       });
@@ -20,7 +20,7 @@ const ManageTickets = () => {
 
   const reject = (id) => {
     axios
-      .patch(`https://backend-ticket-server.vercel.apptickets/reject/${id}`)
+      .patch(`https://backend-ticket-server.vercel.app/tickets/reject/${id}`)
       .then(() => {
         alert("Rejected");
       });

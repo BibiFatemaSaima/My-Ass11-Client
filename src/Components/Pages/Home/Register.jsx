@@ -55,7 +55,7 @@ const Register = () => {
         });
 
         // Save user to MongoDB
-        await axios.post("https://backend-ticket-server.vercel.appusers", {
+        await axios.post("https://backend-ticket-server.vercel.app/users", {
           name,
           email,
           photoURL: photo,
@@ -81,7 +81,7 @@ const Register = () => {
       .then(async (result) => {
         const user = result.user;
 
-        await axios.post("https://backend-ticket-server.vercel.appusers", {
+        await axios.post("https://backend-ticket-server.vercel.app/users", {
           name: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
