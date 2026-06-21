@@ -3,9 +3,9 @@ import { NavLink, Outlet } from "react-router-dom";
 import { AuthContext } from "../Components/AuthContext/AuthContext";
 
 const DashboardLayout = () => {
-  const { user , role, loading} = useContext(AuthContext) || {};
+  const { user , role, loading} = useContext(AuthContext);
   
-  if (loading) {
+  if (loading || !role) {
   return <p>Loading...</p>;
 }
 //const role = user?.role || "vendor";
