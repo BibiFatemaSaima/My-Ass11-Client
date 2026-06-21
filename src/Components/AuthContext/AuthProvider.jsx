@@ -16,7 +16,7 @@ const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState("null");
   const [loading, setLoading] = useState(true);
 
   // Google Sign In
@@ -34,7 +34,7 @@ useEffect(() => {
   const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
     if (!currentUser) {
       setUser(null);
-      setRole("user");
+      setRole("null");
       setLoading(false);
       return;
     }

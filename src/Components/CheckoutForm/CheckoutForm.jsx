@@ -95,7 +95,7 @@ const CheckoutForm = ({ booking }) => {
 
       try {
         const res = await axios.patch(
-          `https://backend-ticket-server.vercel.app/bookings/${booking._id}`,
+          `https://backend-ticket-server.vercel.app/bookings/payment/:id${booking._id}`,
           paymentInfo,
         );
 
