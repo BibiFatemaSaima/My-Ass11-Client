@@ -59,7 +59,7 @@ const Register = () => {
           name,
           email,
           photoURL: photo,
-          role: "user",
+          
           createdAt: new Date(),
         });
 
@@ -85,7 +85,7 @@ const Register = () => {
           name: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
-          role: "user",
+          
         });
 
         setError("");

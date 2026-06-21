@@ -5,7 +5,7 @@ const ManageUsers = () => {
 
   const [users, setUsers] = useState([]);
 
-  const BASE_URL = "https://backend-ticket-server.vercel.app/";
+  const BASE_URL = "https://backend-ticket-server.vercel.app";
 
 
   const fetchUsers = () => {

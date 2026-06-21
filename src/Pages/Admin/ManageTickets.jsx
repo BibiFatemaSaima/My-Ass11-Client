@@ -2,29 +2,45 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const ManageTickets = () => {
-  const [tickets, setTickets] = useState([]);
+const [tickets, setTickets] = useState([]);
 
-  useEffect(() => {
-    axios.get("https://backend-ticket-server.vercel.app/tickets").then((res) => {
+const fetchTickets = () => {
+  axios
+    .get("https://backend-ticket-server.vercel.app/tickets")
+    .then((res) => {
       setTickets(res.data);
     });
-  }, []);
+};
 
-  const approve = (id) => {
-    axios
-      .patch(`https://backend-ticket-server.vercel.app/tickets/approve/${id}`)
-      .then(() => {
+useEffect(() => {
+  fetchTickets();
+}, []);
+
+const approve = (id) => {
+  axios
+    .patch(`https://backend-ticket-server.vercel.app/tickets/approve/${id}`)
+    .then((res) => {
+
+      if (res.data.modifiedCount > 0) {
         alert("Approved");
-      });
-  };
+        fetchTickets(); // data load 
+      }
 
-  const reject = (id) => {
-    axios
-      .patch(`https://backend-ticket-server.vercel.app/tickets/reject/${id}`)
-      .then(() => {
+    });
+};
+
+const reject = (id) => {
+  axios
+    .patch(`https://backend-ticket-server.vercel.app/tickets/reject/${id}`)
+    .then((res) => {
+
+      if (res.data.modifiedCount > 0) {
         alert("Rejected");
-      });
-  };
+        fetchTickets();
+      }
+
+    });
+};
 
   return (
     <div className="p-6">

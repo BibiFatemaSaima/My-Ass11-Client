@@ -30,31 +30,36 @@ const AuthProvider = ({ children }) => {
   };
 
   // User Observer
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (!currentUser) {
-        setUser(null);
-        setRole("user");
-        setLoading(false);
-        return;
-      }
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    if (!currentUser) {
+      setUser(null);
+      setRole("user");
+      setLoading(false);
+      return;
+    }
 
-      setUser(currentUser);
+    setUser(currentUser);
 
+    const fetchRole = async () => {
       try {
         const res = await axios.get(
-          `https://backend-ticket-server.vercel.app/users/${currentUser.email}`,
+          `https://backend-ticket-server.vercel.app/users/${currentUser.email}`
         );
+
         setRole(res.data?.role || "user");
-      } catch (error) {
+      } catch {
         setRole("user");
       }
+    };
 
-      setLoading(false);
-    });
+    await fetchRole();
 
-    return () => unsubscribe();
-  }, []);
+    setLoading(false);
+  });
+
+  return () => unsubscribe();
+}, []);
 
   const authInfo = {
     user,
