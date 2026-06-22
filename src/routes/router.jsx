@@ -23,11 +23,12 @@ import RequestedBookings from "../Pages/Vendor/RequestedBookings";
 import RevenueOverview from "../Pages/Vendor/RevenueOverview";
 import PaymentPage from "../Pages/PaymentPage/PaymentPage";
 import CheckoutForm from "../Components/CheckoutForm/CheckoutForm";
-import AdminUsers from "../Pages/Admin/AdminUsers";
+
 import VendorProfile from "../Pages/Vendor/VendorProfile";
 import ManageTickets from "../Pages/Admin/ManageTickets";
 import AdvertiseTickets from "../Pages/Admin/AdvertiseTickets";
 import ManageUsers from "../Pages/Admin/ManageUsers";
+import AdminProfile from "../Pages/Admin/AdminProfile";
 
 export const router = createBrowserRouter([
   // main layout
@@ -163,10 +164,7 @@ export const router = createBrowserRouter([
         path: "checkoutFrom",
         element: <CheckoutForm />,
       },
-      {
-        path: "admin-users",
-        element: <AdminUsers />,
-      },
+
       {
         path: "vendor-profile",
         element: <VendorProfile />,
@@ -181,7 +179,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "manageUsers",
-        element: <ManageUsers />,
+        element: <ManageUsers/>,
+      },
+      {
+        path: "adminProfile",
+        element: <AdminProfile/>,
       },
     ],
   },

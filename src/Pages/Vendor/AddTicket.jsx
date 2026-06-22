@@ -23,60 +23,48 @@ const AddTicket = () => {
   };
 
   // add ticket
-  const handleAddTicket = (e) => {
-    e.preventDefault();
+const handleAddTicket = (e) => {
+  e.preventDefault();
 
-    const form = e.target;
+  const form = e.target;
 
-    const title = form.title.value;
-    const from = form.from.value;
-    const to = form.to.value;
-    const transportType = form.transportType.value;
-    const price = parseInt(form.price.value);
-    const quantity = parseInt(form.quantity.value);
-    const departureDate = form.departureDate.value;
-    const departureTime = form.departureTime.value;
-    const image = form.image.value;
+  const ticketData = {
+    title: form.title.value,
+    from: form.from.value,
+    to: form.to.value,
+    transportType: form.transportType.value,
+    price: Number(form.price.value),
+    quantity: Number(form.quantity.value),
+    departureDate: form.departureDate.value,
+    departureTime: form.departureTime.value,
+    image: form.image.value,
+    perks: selectedPerks,
 
-    const ticketData = {
-      title,
-      from,
-      to,
-      transportType,
-      price,
-      quantity,
-      departureDate,
-      departureTime,
-      perks: selectedPerks,
-      image,
-      vendorName: user?.displayName,
-      vendorEmail: user?.email,
-      status: "approved",
-      advertised: false,
-      createdAt: new Date(),
-    };
-
-    axios
-      .post("https://backend-ticket-server.vercel.app/tickets", ticketData)
-
-      .then((res) => {
-        console.log(res.data);
-
-        if (res.data.insertedId) {
-          toast.success("Ticket Added Successfully");
-
-          form.reset();
-
-          setSelectedPerks([]);
-        }
-      })
-
-      .catch((error) => {
-        console.log(error);
-
-        toast.error("Failed To Add Ticket");
-      });
+    vendorName: user?.displayName || "Unknown",
+    vendorEmail: user?.email || ""
   };
+
+  // 🔴 DEBUG (IMPORTANT)
+  console.log("Sending ticket:", ticketData);
+
+  axios.post(
+    "https://backend-ticket-server.vercel.app/tickets",
+    ticketData
+  )
+  .then((res) => {
+    console.log("Response:", res.data);
+
+    if (res.data.insertedId || res.data.success) {
+      toast.success("Ticket Added Successfully");
+      form.reset();
+      setSelectedPerks([]);
+    }
+  })
+  .catch((error) => {
+    console.log("ERROR:", error.response?.data || error.message);
+    toast.error(error.response?.data?.error || "Failed To Add Ticket");
+  });
+};
 
   return (
     <div className="max-w-4xl mx-auto p-6">
